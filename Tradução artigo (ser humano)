@@ -1,0 +1,64 @@
+	     				Detecção automática de (potenciais) fatores no texto-fonte que levam a vieses de gênero na tradução automática
+		
+		   							Janiça Hackenbuchner   Arda Tezcan	 Joke Daems
+										Time de linguagem e tradução tecnológica
+		        							Departamento, Interpretação e Comunicação
+				 							Universidade de Gante
+												Bélgica
+			       								firstname.surname@ugent.be
+
+												Resumo
+Esse projeto de pesquisa busca desenvolver uma metodologia aberta para auxiliar os sistemas de tradução por máquina a possuirem mais inclusividade de gêrero para a sociedade. O objetivo é criar um sistema 
+detecção, um modelo de aprendizado de máquina treinado com anotações manuais, capaz de analisar banco de dados e encontrar palavras-chave ou frases que influenciam o viés de gênero no resultado das traduções. 
+Os resultados da pesquisa principal será (1) uma anotação manual com conjunto de dados, (2) uma taxonômia, e (3) um modelo ajustado.
+				      							     1 Créditos
+Esse projeto é uma pesquisa básica estratégica de doutorado totalmente financiada pela Fundação de Pesquisa - Flandres (FWO) pelo período de quatro anos, de 01.11.2023 até 31.10.2027, e sediada no Time de
+Linguagem e Tradução Tecnológica (LT3) na Universidade de Gante.
+											     2 Introdução
+Com o aumento do uso e do interesse nos desenvolvimentos de tradução por máquina (TM) e uma demanda crescente por inclusividade de gênero na sociedade, as pesquisas sobre viés de gênero na TM estão aumentando
+(Savoldi et al., 2021). Um sistema de TM é considerado enviesado em relação ao gênero se ele "discrimina sistematicamente e injustamente contra certos indivíduos ou grupos em favor de outros" (Savoldi et al.,
+2021, p. 846), perpetuando "estereótipos imprecisos e potencialmente discriminatórios" na sociedade (Vanmassenhove, 2024, p. 3). Estudos a nível de palavra mostram que as incorporações de palavras (word
+embeddings) usadas no treinamento de TM são altamente flexionadas por gênero, onde incorporações de diferentes classes gramaticais (POS) se agrupam fortemente com base em seu gênero em vários domínios (por
+exemplo, em esportes, cozinha, grandes empresas de tecnologia, palavrões sexuais) (Caliskan et al., 2022). Porém, a pesquisa sobre incorporação de palavras é limitada à análise no nível da palavra e ainda não
+foi estendida para o contexto completo de frases em linguagem natural e nas associações sistemáticas de gênero resultantes nas traduções por máquina.
+											3 Descrição do Projeto
+Nesse projeto de pesquisa, aplicamos uma nova abordagem para analisar características linguísticas e morfológicas alinhadas com foco no gênero nos textos-fonte e textos-alvo e aplicamos metodologias de
+aprendizado de máquina. O inglês é escolhido como o idioma-fonte, onde os nomes de papéis geralmente não são marcados com um gênero (ex: professor/teacher) e as traduções-alvo são analisadas em alemão e
+espanhol, idiomas com gênero gramatical (Savoldi et al., 2021), onde o gênero é claramente marcado (ex: Lehrer/Lehrerin). O objetivo é identificar e classificar automaticamente "palavras-gatilho" em um
+contexto-fonte que influenciam a flexão de gênero gramatical na tradução-alvo (ou seja, se uma TM traduz uma pessoa como feminino ou masculino, ou se opta por neutralizar ou reformular a palavra). O projeto
+consiste nos seguintes resultados principais que diferem de pesquisas anteriores: (1) um conjunto de dados anotado manualmente de associações humanas de gênero em contextos de frases, (2) uma taxonômia
+baseada nessas anotações, (3) uma análise comparativa das associações humanas de gênero versus as flexões de gênero da TM, e (4) um grande modelo de linguagem (LLM) ajustado que destaca palavras-gatilho para
+gênero em um texto-fonte.
+											3.1 Coleta de dados
+O primeiro passo é a coleta de uma lista de palavras candidatas (nomes de papéis, ex: amigo) incluindo sua flexão de gênero, conforme amostrado de suas incorporações de palavras em estudos anteriores. Essas
+palavras são usadas para filtrar dados monolíngues em inglês de diferentes domínios, lembrando um pouco a metodologia adotada por Ondoño-Soler e Forcada (2022). Após a filtragem automática, as frases em
+inglês são filtradas manualmente em um nível monolíngue para selecionar casos ambíguos de gênero em termos da palavra candidata no singular. Nosso objetivo é de 2.000 a 5.000 frases para o ajuste fino do
+modelo. Em seguida, os dados filtrados serão traduzidos por máquina para o alemão e o espanhol com kits de ferramentas de TM disponíveis publicamente. Documentamos e comparamos para qual gênero os sistemas de
+TM traduzem cada palavra candidata, primeiro no nível da palavra (ex: o termo individual amigo) e depois em um contexto de frase (ex: Depois que um amigo sugeriu que ela tentasse, Ann disse: "Claro!"). Os
+dois corpora bilíngues (EN-DE, EN-ES) serão alinhados e enriquecidos no nível da palavra para informações morfossintáticas.
+										    3.2 Anotação e Análise de Dados
+No próximo passo, os dados ambíguos em inglês serão anotados manualmente para analisar como o contexto influencia as associações de gênero. A partir dessas anotações, podemos comparar até que ponto as
+associações humanas de gênero se sobrepõem à escolha de gênero gramatical de um sistema de TM em um idioma-alvo. Para cada frase, os anotadores serão solicitados a anotar qual contexto influencia sua
+associação de gênero. Especificamente, eles são solicitados a anotar quaisquer palavras-gatilho ou frases (por exemplo, uma referência, localização ou qualquer POS) que eles pessoalmente consideram
+influenciar a flexão de gênero de uma palavra candidata naquela frase. As anotações serão verificadas e classificadas e, a partir disso, uma taxonômia será criada. Um estudo de caso com 22 anotadores de
+diferentes gêneros já foi realizado para avaliar as diretrizes de anotação, a concordância entre anotadores e a influência de gênero (Hackenbuchner et al., em revisão). Em seguida, analisaremos as
+características morfossintáticas dos dados usando ferramentas automatizadas. A combinação de todas as informações morfossintáticas revelará padrões entre palavras-gatilho e a palavra candidata em questão. Com
+base nessa análise, queremos excluir palavras-gatilho "irrelevantes", permitindo-nos focar em palavras ou frases "relevantes" que têm a maior influência no gênero do candidato.
+										3.3 Ajuste Fino e Avaliação do Modelo
+Em nosso passo final, aplicamos o aprendizado de máquina (AM) fazendo o ajuste fino de um LLM com base em nossos dados anotados e verificados e nas informações extraídas da análise morfossintática. Ao buscar
+padrões ainda não estudados que levam ao viés de gênero na TM, com este modelo ajustado pretendemos detectar automaticamente palavras ou frases que desencadeiam gênero em um texto-fonte e destacá-las.
+											4 Projetos Alinhados
+Em linha com este projeto de pesquisa, a bolsista de doutorado, primeira autora deste artigo, é cofundadora e membra do DeBiasByUs¹ e coorganizadora dos dois Workshops Internacionais sobre Tecnologias de
+Tradução Inclusivas de Gênero.
+											   5 Conclusão
+Nosso benchmark poderia tornar os usuários de TM cientes das flexões de gênero dos textos-fonte que são traduzidos por máquina, apoiar tecnologicamente os tradutores na pós-edição de resultados de TM,
+direcionar os desenvolvedores de sistemas de TM para problemas persistentes de viés de gênero e ajudar os criadores de conteúdo a identificar potenciais gatilhos no texto que podem levar a traduções com viés
+de gênero.
+											   Referências
+Caliskan, Aylin, Pimparkar P. Ajay, Tessa Charlesworth, Robert Wolfe, and Mahzarin R. Banaji. 2022. Gender bias in word embeddings: A comprehensive analysis of frequency, syntax, and semantics. In Proceedings
+of the 2022 AAAI/ACM Conference on AI, Ethics, and Society, page 156-170.
+Hackenbuchner, Janiça, Arda Tezcan, Aaron Maladry, and Joke Daems. under review. You shall know a word's gender by the company it keeps: Comparing the role of context in human gender assumptions with mt.
+Ondoño-Soler, Nerea and Mikel L. Forcada. 2022. The exacerbation of (grammatical) gender stereotypes in english-spanish machine translation. Revista Tradumàtica, 20:177-196. Savoldi, Beatrice, Marco Gaido,
+Luisa Bentivogli, Matteo Negri, and Marco Turchi. 2021. Gender bias in machine translation. In Transactions of the Association for Computational Linguistics, volume 9, page 845-874, Cambridge, MA.
+Vanmassenhove, Eva. 2024. Gender bias in machine translation and the era of large language models. In arXiv preprint, page 1-24. 
+¹https://debiasbyus.ugent.be/
